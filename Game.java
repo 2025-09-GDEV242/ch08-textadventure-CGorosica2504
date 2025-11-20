@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -20,6 +22,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Stack<Room> roomHistory;        //New stack to track the history of visited rooms
         
     /**
      * Create the game and initialise its internal map.
@@ -28,6 +31,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        roomHistory = new Stack<>();
     }
 
     /**
@@ -171,6 +175,10 @@ public class Game
             case LOOK:
                 look(); 
                 break;
+                
+            case BACK:
+                goBack();
+                break;
 
             case QUIT:
                 wantToQuit = quit(command);
@@ -197,7 +205,10 @@ public class Game
 
     /** 
      * Try to go in one direction. If there is an exit, enter the new
-     * room, otherwise print an error message.
+     * room. The current room is pushed onto the room history stack to allow the player to 
+     * go back.
+     * 
+     * If there is no exit in the specified direction, an error message is printed.
      */
     private void goRoom(Command command) 
     {
@@ -216,6 +227,9 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
+            //Push the current room to history before moving
+            roomHistory.push(currentRoom);
+            
             currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
         }
@@ -243,5 +257,20 @@ public class Game
      */
     private void look() {
         System.out.println(currentRoom.getLongDescription());
+    }
+    
+    /**
+     * Move the player back to the previous room.
+     * The last visited room is popped from the room history stack and becomes the current room.
+     * If there is no previous rooms, a message is displayed indicating cannot go back
+     * further.
+     */
+    private void goBack() {
+        if (roomHistory.isEmpty()) {
+            System.out.println("You cannot go back any further.");
+        } else {
+            currentRoom = roomHistory.pop();
+            System.out.println(currentRoom.getLongDescription());
+        }
     }
 }
