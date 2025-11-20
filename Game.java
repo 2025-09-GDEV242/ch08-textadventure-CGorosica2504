@@ -10,7 +10,7 @@ import java.util.Stack;
  *  method.
  * 
  *  This main class creates and initialises all the others: it creates all
- *  rooms, creates the parser and starts the game.  It also evaluates and
+ *  rooms, creates room items, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
  * @author  Michael Kölling and David J. Barnes
@@ -21,24 +21,26 @@ import java.util.Stack;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-    private Stack<Room> roomHistory;        //New stack to track the history of visited rooms
+    private Player player;
         
     /**
-     * Create the game and initialise its internal map.
+     * Create the game and initialise its internal map. Also creates a Player object with the
+     * starting room.
      */
     public Game() 
     {
-        createRooms();
+        Room startingRoom = createRooms();  //crateRooms returns the starting room
         parser = new Parser();
-        roomHistory = new Stack<>();
+        player = new Player("Terrarian", startingRoom);
     }
 
     /**
-     * Create all the rooms, link their exits together, and add any items that could be present
+     * Creates all of the rooms, link their exits together, and adds any items that could be present
      * within them.
+     * 
+     * @return the starting Room for the player
      */
-    private void createRooms()
+    private Room createRooms()
     {
         Room Forest, Desert, Ocean, Jungle, Dungeon, Tundra, Corruption, Underworld;
       
@@ -114,7 +116,7 @@ public class Game
         
         Underworld.setExit("north", Dungeon);
 
-        currentRoom = Forest;  // start game outside
+        return Forest;  //Start in the forest room
     }
 
     /**
@@ -145,7 +147,7 @@ public class Game
         System.out.println("World of Terraria is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        printCurrentRoomDescription();
     }
 
     /**
@@ -202,11 +204,19 @@ public class Game
         System.out.println("Your command words are:");
         parser.showCommands();
     }
+    
+    /**
+     * Prints the description of the player's current room information.
+     */
+    private void printCurrentRoomDescription() {
+        Room current = player.getCurrentRoom();
+        String description = current.getLongDescription();
+        System.out.println(description);
+    }
 
     /** 
      * Try to go in one direction. If there is an exit, enter the new
-     * room. The current room is pushed onto the room history stack to allow the player to 
-     * go back.
+     * room.
      * 
      * If there is no exit in the specified direction, an error message is printed.
      */
@@ -221,17 +231,15 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room current = player.getCurrentRoom();
+        Room nextRoom = current.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            //Push the current room to history before moving
-            roomHistory.push(currentRoom);
-            
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+            player.moveTo(nextRoom);
+            printCurrentRoomDescription();
         }
     }
 
@@ -252,25 +260,24 @@ public class Game
     }
     
     /**
-     * When "look" is entered, the description of the room and its exists are
-     * printed out again.
+     * When "look" is entered, the player's current room information is printed again.
      */
     private void look() {
-        System.out.println(currentRoom.getLongDescription());
+        printCurrentRoomDescription();
     }
     
     /**
      * Move the player back to the previous room.
-     * The last visited room is popped from the room history stack and becomes the current room.
-     * If there is no previous rooms, a message is displayed indicating cannot go back
-     * further.
+     * 
+     * If there is no previous room, a message is displayed indicating that the
+     * player cannot go back further.
      */
     private void goBack() {
-        if (roomHistory.isEmpty()) {
+        boolean movedBack = player.goBack();
+        if (!movedBack) {
             System.out.println("You cannot go back any further.");
         } else {
-            currentRoom = roomHistory.pop();
-            System.out.println(currentRoom.getLongDescription());
+            printCurrentRoomDescription();
         }
     }
 }
