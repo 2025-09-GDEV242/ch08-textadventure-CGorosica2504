@@ -12,7 +12,8 @@
  *  executes the commands that the parser returns.
  * 
  * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author Christian Gorosica
+ * @version 2025.11.17
  */
 
 public class Game 
@@ -34,30 +35,46 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room Forest, Desert, Ocean, Jungle, Dungeon, Tundra, Corruption, Underworld;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        Forest = new Room("in a green forest. There are tall trees and ambient wildlife all around");
+        Desert = new Room("in a desert. It is a dry expanse of sand and sparse vegetation under the harsh sunlight");
+        Ocean = new Room("at the ocean coast of crashing waves, deep water, and scattered debris");
+        Jungle = new Room("in a a jungle. It is a humid overgrowth of thick vines, towering flora, and thorns");
+        Dungeon = new Room("in an abandoned dungeon. This cursed structure is haunted with relics, traps, and restless souls");
+        Tundra = new Room("in a tundra. This frozen landscape is full of snowdrifts, icy winds, and brittle terrain");
+        Corruption = new Room("in the corruption. This is a decayed wasteland of warped terrain, pulsating growths, and hostile energy");
+        Underworld = new Room("at the underworld. These depths are filled with ash, hellstone, and flowing magma");
         
         // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        Forest.setExit("west", Desert);
+        Forest.setExit("east", Jungle);
+        Forest.setExit("south", Tundra);
 
-        theater.setExit("west", outside);
+        Desert.setExit("west", Ocean);
+        Desert.setExit("east", Forest);
+        Desert.setExit("south", Dungeon);
 
-        pub.setExit("east", outside);
+        Ocean.setExit("east", Desert);
 
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
+        Jungle.setExit("west", Forest);
+        Jungle.setExit("south", Corruption);
 
-        office.setExit("west", lab);
+        Dungeon.setExit("north", Desert);
+        Dungeon.setExit("east", Tundra);
+        Dungeon.setExit("south", Underworld);
+        
+        Tundra.setExit("north", Forest);
+        Tundra.setExit("west", Dungeon);
+        Tundra.setExit("east", Corruption);
+        
+        Corruption.setExit("north", Jungle);
+        Corruption.setExit("west", Tundra);
+        
+        Underworld.setExit("north", Dungeon);
 
-        currentRoom = outside;  // start game outside
+        currentRoom = Forest;  // start game outside
     }
 
     /**

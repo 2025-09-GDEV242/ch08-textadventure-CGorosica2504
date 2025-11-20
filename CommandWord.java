@@ -3,7 +3,8 @@
  * along with a string in a particular language.
  * 
  * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author Christian Gorosica
+ * @version 2025.11.17
  */
 public enum CommandWord
 {
