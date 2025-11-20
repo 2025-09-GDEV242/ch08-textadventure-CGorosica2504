@@ -5,12 +5,13 @@ import java.util.Iterator;
 /**
  * Class Room - a room in an adventure game.
  *
- * This class is part of the "World of Zuul" application. 
+ * This class is part of the "World of Zuul" Terraria based application. 
  * "World of Zuul" is a very simple, text based adventure game.  
  *
  * A "Room" represents one location in the scenery of the game.  It is 
  * connected to other rooms via exits.  For each existing exit, the room 
- * stores a reference to the neighboring room. Rooms can also contain items within.
+ * stores a reference to the neighboring room. Rooms can also contain items within, and those
+ * items can be removed.
  * 
  * @author  Michael Kölling and David J. Barnes
  * @author Christian Gorosica
@@ -118,6 +119,14 @@ public class Room
         return itemString;
     }
     
-    
+    /**
+     * Removes and returns an item stored in this room. If the item does not exist, null is
+     * returned.
+     * @param itemName The description/name of the item to remove
+     * @return The Item object, or null of no such item exists
+     */
+    public Item removeItem(String itemName) {
+        return items.remove(itemName);
+    }
 }
 

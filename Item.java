@@ -1,8 +1,8 @@
 
 /**
- * Class Item - a item in an adventure game.
+ * The Item class represents an item that could be found within the game.
  *
- * This class is part of the "World of Zuul" application. 
+ * This class is part of the "World of Zuul" Terraria based application. 
  * "World of Zuul" is a very simple, text based adventure game.  
  *
  * A "Item" represents an object which can be found in the scenery of the game.
@@ -26,7 +26,7 @@ public class Item
         this.weight = weight;
     }
     /**
-     * Get the descruption of the item
+     * Get the descruption of the item.
      * @return The item's description
      */
     public String getDescription() {
@@ -34,7 +34,7 @@ public class Item
     }
     
     /**
-     * Get the weight of the item
+     * Get the weight of the item.
      * @return The weight in kilograms
      */
     public double getWeight() {
@@ -43,7 +43,7 @@ public class Item
     
     /**
      * Return a string representation of the item.
-     * Includes description and weight
+     * Includes description and weight.
      * @return A formatted string of the item.
      */
     @Override

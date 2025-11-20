@@ -1,7 +1,5 @@
-import java.util.Stack;
-
 /**
- *  This class is the main class of the "World of Zuul" application. 
+ *  This class is the main class of the "World of Zuul" Terraria based application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
  *  can walk around some scenery. That's all. It should really be extended 
  *  to make it more interesting!
@@ -55,39 +53,38 @@ public class Game
         Underworld = new Room("at the underworld. These depths are filled with ash, hellstone, and flowing magma");
         
         //create and initialize the items that are present in some rooms
-        Forest.addItem(new Item("Copper Shortword", 2.0));
-        Forest.addItem(new Item("Copper Pickaxe", 2.0));
-        Forest.addItem(new Item("Copper Axe", 2.0));
+        Forest.addItem(new Item("Shortsword", 6.0));
+        Forest.addItem(new Item("Pickaxe", 6.0));
+        Forest.addItem(new Item("Axe", 6.0));
         
-        Desert.addItem(new Item("Flying Carpet", 4.5));
-        Desert.addItem(new Item("Sandstorm in a Bottle", 3.75));
+        Desert.addItem(new Item("Cactus", 2.0));
+        Desert.addItem(new Item("Waterleaf", 0.10));
         
-        Ocean.addItem(new Item("Trident", 6));
-        Ocean.addItem(new Item("Diving Helmet", 4.0));
-        Ocean.addItem(new Item("Flippers", 7.0));
+        Ocean.addItem(new Item("Trident", 10.0));
+        Ocean.addItem(new Item("Glowstick", 0.10));
+        Ocean.addItem(new Item("Flippers", 5.0));
         
         Jungle.addItem(new Item("Boomstick", 7.0));
-        Jungle.addItem(new Item("Anklet of the Wind", 5.0));
-        Jungle.addItem(new Item("The Bee's Knees", 11.0));
+        Jungle.addItem(new Item("Honey", 1.0));
+        Jungle.addItem(new Item("Bezoar", 4.0));
         
         Dungeon.addItem(new Item("Waterbolt", 4.5));
         Dungeon.addItem(new Item("Muramasa", 8.0));
         Dungeon.addItem(new Item("Handgun", 7.5));
-        Dungeon.addItem(new Item("Magic Missile", 9.0));
+        Dungeon.addItem(new Item("Valor", 9.0));
         
-        Tundra.addItem(new Item("Snowball Cannon", 12.0));
-        Tundra.addItem(new Item("Ice Blade", 10.0));
-        Tundra.addItem(new Item("Flurry Boots", 8.0));
+        Tundra.addItem(new Item("Frostbrand", 20.0));
+        Tundra.addItem(new Item("Snowball", 0.5));
+        Tundra.addItem(new Item("Skates", 8.0));
         
         Corruption.addItem(new Item("Musket", 15.0));
-        Corruption.addItem(new Item("Ball O' Hurt", 13.0));
         Corruption.addItem(new Item("Vilethorn", 11.0));
         
-        Underworld.addItem(new Item("Dark Lance", 13.0));
+        Underworld.addItem(new Item("Lance", 13.0));
         Underworld.addItem(new Item("Sunfury", 15.0));
-        Underworld.addItem(new Item("Hellwing Bow", 16.0));
+        Underworld.addItem(new Item("Hellwing", 16.0));
         Underworld.addItem(new Item("Flamelash", 12.0));
-        Underworld.addItem(new Item("Demon Scythe", 10.0));
+        Underworld.addItem(new Item("Scythe", 10.0));
         
         // initialise room exits
         Forest.setExit("west", Desert);
@@ -136,7 +133,7 @@ public class Game
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
-
+    
     /**
      * Print out the opening message for the player.
      */
@@ -180,6 +177,14 @@ public class Game
                 
             case BACK:
                 goBack();
+                break;
+                
+            case TAKE:
+                takeItem(command);
+                break;
+                
+            case DROP:
+                dropItem(command);
                 break;
 
             case QUIT:
@@ -260,10 +265,12 @@ public class Game
     }
     
     /**
-     * When "look" is entered, the player's current room information is printed again.
+     * When "look" is entered, the player's current room information is printed again along with
+     * their list of inventory items.
      */
     private void look() {
         printCurrentRoomDescription();
+        System.out.println(player.getInventoryString());
     }
     
     /**
@@ -278,6 +285,52 @@ public class Game
             System.out.println("You cannot go back any further.");
         } else {
             printCurrentRoomDescription();
+        }
+    }
+    
+    /**
+     * Executes the take command. If the command does not specify an item name, an error message
+     * is displayed. If the item is present in the current room, it is moved into the player's
+     * inventory.
+     * 
+     * @param command The full command as entered by the user
+     */
+    private void takeItem(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("Take what?");
+            return;
+        }
+        
+        String itemName = command.getSecondWord();
+        boolean success = player.takeItem(itemName);
+        
+        if (success) {
+            System.out.println("You have taken the " + itemName + ".");
+        } else {
+            System.out.println("There is no " + itemName + " here.");
+        }
+    }
+    
+    /**
+     * Executes the drop command. If the command does not specify an iten name, an error message
+     * is displayed. If the player is carrying the specified item, it is placed into the current
+     * room.
+     * 
+     * @param command The full drop command as entered by the user
+     */
+    private void dropItem(Command command) {
+        if (!command.hasSecondWord()) {
+            System.out.println("Drop what?");
+            return;
+        }
+        
+        String itemName = command.getSecondWord();
+        boolean success = player.dropItem(itemName);
+        
+        if (success) {
+            System.out.println("You have dropped the " + itemName + ".");
+        } else {
+            System.out.println("You are not carrying the " + itemName + ".");
         }
     }
 }
