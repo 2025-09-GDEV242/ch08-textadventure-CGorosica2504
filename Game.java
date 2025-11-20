@@ -31,7 +31,8 @@ public class Game
     }
 
     /**
-     * Create all the rooms and link their exits together.
+     * Create all the rooms, link their exits together, and add any items that could be present
+     * within them.
      */
     private void createRooms()
     {
@@ -46,6 +47,41 @@ public class Game
         Tundra = new Room("in a tundra. This frozen landscape is full of snowdrifts, icy winds, and brittle terrain");
         Corruption = new Room("in the corruption. This is a decayed wasteland of warped terrain, pulsating growths, and hostile energy");
         Underworld = new Room("at the underworld. These depths are filled with ash, hellstone, and flowing magma");
+        
+        //create and initialize the items that are present in some rooms
+        Forest.addItem(new Item("Copper Shortword", 2.0));
+        Forest.addItem(new Item("Copper Pickaxe", 2.0));
+        Forest.addItem(new Item("Copper Axe", 2.0));
+        
+        Desert.addItem(new Item("Flying Carpet", 4.5));
+        Desert.addItem(new Item("Sandstorm in a Bottle", 3.75));
+        
+        Ocean.addItem(new Item("Trident", 6));
+        Ocean.addItem(new Item("Diving Helmet", 4.0));
+        Ocean.addItem(new Item("Flippers", 7.0));
+        
+        Jungle.addItem(new Item("Boomstick", 7.0));
+        Jungle.addItem(new Item("Anklet of the Wind", 5.0));
+        Jungle.addItem(new Item("The Bee's Knees", 11.0));
+        
+        Dungeon.addItem(new Item("Waterbolt", 4.5));
+        Dungeon.addItem(new Item("Muramasa", 8.0));
+        Dungeon.addItem(new Item("Handgun", 7.5));
+        Dungeon.addItem(new Item("Magic Missile", 9.0));
+        
+        Tundra.addItem(new Item("Snowball Cannon", 12.0));
+        Tundra.addItem(new Item("Ice Blade", 10.0));
+        Tundra.addItem(new Item("Flurry Boots", 8.0));
+        
+        Corruption.addItem(new Item("Musket", 15.0));
+        Corruption.addItem(new Item("Ball O' Hurt", 13.0));
+        Corruption.addItem(new Item("Vilethorn", 11.0));
+        
+        Underworld.addItem(new Item("Dark Lance", 13.0));
+        Underworld.addItem(new Item("Sunfury", 15.0));
+        Underworld.addItem(new Item("Hellwing Bow", 16.0));
+        Underworld.addItem(new Item("Flamelash", 12.0));
+        Underworld.addItem(new Item("Demon Scythe", 10.0));
         
         // initialise room exits
         Forest.setExit("west", Desert);
@@ -101,8 +137,8 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to the World of Terraria!");
+        System.out.println("World of Terraria is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(currentRoom.getLongDescription());
@@ -152,8 +188,8 @@ public class Game
      */
     private void printHelp() 
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("You are lost in the world of Terraria. You are alone. You wander");
+        System.out.println("around.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
