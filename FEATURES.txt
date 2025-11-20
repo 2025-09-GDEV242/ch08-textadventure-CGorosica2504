@@ -1,0 +1,6 @@
+** IMPLEMENTED FEATURES **
+
+- Added items to the game. Items have a description and a weight and are placed into the rooms. Rooms can hold multiple items.
+- Added multiple player functions. Players can add items from the current room into their inventories and drop items from their inventories into their current room.
+- Added the "back" option. Players can now use the "back" command to backtrack through the rooms they've been in, and can do so repeatedly.
+- Added the "look" option. At any given moment, players can use the "look" command to view information about the room they're in, its exits, the items present within it, and their own inventory.
